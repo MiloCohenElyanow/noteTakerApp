@@ -1,6 +1,4 @@
 //REQS
-// landing page with with link to notes page
-//landing page needs rout to notes page and reverse
 //notes page has existing notes listed in left-hand column
 //notes page has empty fields to enter new note title and notes text in right hand column
 //when text is entered into notes title or notes save button apeares in nav bar
@@ -15,7 +13,7 @@
 //GET/notes should return the notes.html file
 //GET * should return the index.html file
 //API ROUTES
-//GET/api/notes should read the db.json fiile and return all saved notes as JSON
+//GET/api/notes should read the db.json file and return all saved notes as JSON
 //POST/api/notes should recieve a new note, add it to the db,and return the new note to client
 //need npm package to add ids to notes
 const { clog } = require('./middleware/clog');
@@ -25,6 +23,8 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
+//fs utils helpers, got from bootcamp, this is extremely helpfull for the reading and writing of these files especialy the json
+const { readFromFile, writeToFile, readAndAppend } = require("./tools/fsUtils.js")
 
 const PORT = process.env.port || 8080;
 app.use(clog);
@@ -47,6 +47,24 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/pages/404.html"))
 });
 
+
+function readnotes(){
+  readFromFile("./db/db.json").then((data) => {
+    let notes_contents = JSON.parse(data);
+    console.log(notes_contents);
+  });
+}
+
+
+readnotes()
+
 app.listen(PORT, () =>{
   console.log(`app now listening on port: http://localhost:${PORT}`)
 });
+
+
+
+
+// function writeNote(){
+
+// }
